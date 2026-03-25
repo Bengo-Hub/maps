@@ -34,6 +34,7 @@ export function MapProvider({
         config.styleUrl ??
         `${config.tileServerUrl}/styles/osm-bright/style.json`,
       apiBaseUrl: config.apiBaseUrl,
+      routingApiUrl: config.routingApiUrl ?? config.apiBaseUrl,
       authToken: config.authToken,
       wsUrl:
         config.wsUrl ??
@@ -43,6 +44,7 @@ export function MapProvider({
       config.tileServerUrl,
       config.styleUrl,
       config.apiBaseUrl,
+      config.routingApiUrl,
       config.authToken,
       config.wsUrl,
     ]
