@@ -6,6 +6,8 @@ export interface MapConfig {
   styleUrl?: string;
   /** Base URL for the logistics API (e.g., https://logisticsapi.codevertexitsolutions.com/api/v1) */
   apiBaseUrl: string;
+  /** Separate base URL for routing API requests. Falls back to apiBaseUrl if not set. */
+  routingApiUrl?: string;
   /** JWT auth token for authenticated API calls */
   authToken?: string;
   /** WebSocket URL for real-time tracking (defaults to apiBaseUrl with ws:// scheme) */
