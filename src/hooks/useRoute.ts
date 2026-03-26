@@ -37,8 +37,8 @@ interface UseRouteResult {
   refetch: () => Promise<void>;
 }
 
-function buildCacheKey(origin: LatLng, destination: LatLng): string {
-  return `${CACHE_PREFIX}${origin.latitude.toFixed(4)},${origin.longitude.toFixed(4)}:${destination.latitude.toFixed(4)},${destination.longitude.toFixed(4)}`;
+function buildCacheKey(tenantSlug: string, origin: LatLng, destination: LatLng): string {
+  return `${CACHE_PREFIX}${tenantSlug}:${origin.latitude.toFixed(4)},${origin.longitude.toFixed(4)}:${destination.latitude.toFixed(4)},${destination.longitude.toFixed(4)}`;
 }
 
 function readCache(key: string): CachedRoute | null {
@@ -91,14 +91,14 @@ export function useRoute({
 
   const routingBaseUrl = config.routingApiUrl ?? config.apiBaseUrl;
 
-  const fetchRoute = useCallback(async () => {
+  const fetchRoute = useCallback(async (skipCache = false) => {
     if (!origin || !destination) return;
 
-    const cacheKey = buildCacheKey(origin, destination);
+    const cacheKey = buildCacheKey(tenantSlug, origin, destination);
 
-    // Check localStorage for a fresh cached route.
+    // Check localStorage for a fresh cached route (unless explicitly skipped).
     const cached = readCache(cacheKey);
-    if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
+    if (!skipCache && cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
       setRoute({
         coordinates: cached.coordinates,
         distanceMeters: cached.distanceMeters,
@@ -164,11 +164,15 @@ export function useRoute({
     }
   }, [origin, destination, tenantSlug, routingBaseUrl, config.authToken]);
 
+  const refetch = useCallback(async () => {
+    await fetchRoute(true);
+  }, [fetchRoute]);
+
   useEffect(() => {
     if (enabled && origin && destination) {
       fetchRoute();
     }
   }, [enabled, fetchRoute, origin, destination]);
 
-  return { route, isLoading, error, isFromCache, refetch: fetchRoute };
+  return { route, isLoading, error, isFromCache, refetch };
 }
