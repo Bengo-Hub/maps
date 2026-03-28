@@ -65,7 +65,7 @@ export function MapContainer({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const styleUrl = mapStyle ?? config.styleUrl ?? `${config.tileServerUrl}/styles/osm-bright/style.json`;
+    const styleUrl = mapStyle ?? config.styleUrl ?? `${config.tileServerUrl}/styles/basic-preview/style.json`;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
