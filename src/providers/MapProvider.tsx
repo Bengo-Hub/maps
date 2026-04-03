@@ -32,7 +32,7 @@ export function MapProvider({
       tileServerUrl: config.tileServerUrl,
       styleUrl:
         config.styleUrl ??
-        `${config.tileServerUrl}/styles/basic-preview/style.json`,
+        `${config.tileServerUrl}/styles/osm-bright/style.json`,
       apiBaseUrl: config.apiBaseUrl,
       routingApiUrl: config.routingApiUrl ?? config.apiBaseUrl,
       authToken: config.authToken,
