@@ -22,8 +22,8 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 function TrackingPage({ taskId, tenantSlug, jwt }) {
   return (
     <MapProvider
-      tileServerUrl="https://tiles.codevertexitsolutions.com"
-      apiBaseUrl="https://logisticsapi.codevertexitsolutions.com/api/v1"
+      tileServerUrl="https://tiles.codevertexafrica.com"
+      apiBaseUrl="https://logisticsapi.codevertexafrica.com/api/v1"
       authToken={jwt}
     >
       <OrderTrackingMap

@@ -1,10 +1,10 @@
 /** Configuration for the MapProvider context */
 export interface MapConfig {
-  /** URL to the tile server (e.g., https://tiles.codevertexitsolutions.com) */
+  /** URL to the tile server (e.g., https://tiles.codevertexafrica.com) */
   tileServerUrl: string;
   /** MapLibre style URL or object. Defaults to OSM Bright style from tile server */
   styleUrl?: string;
-  /** Base URL for the logistics API (e.g., https://logisticsapi.codevertexitsolutions.com/api/v1) */
+  /** Base URL for the logistics API (e.g., https://logisticsapi.codevertexafrica.com/api/v1) */
   apiBaseUrl: string;
   /** Separate base URL for routing API requests. Falls back to apiBaseUrl if not set. */
   routingApiUrl?: string;

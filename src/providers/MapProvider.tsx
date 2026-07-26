@@ -15,8 +15,8 @@ export interface MapProviderProps extends MapConfig {
  * @example
  * ```tsx
  * <MapProvider
- *   tileServerUrl="https://tiles.codevertexitsolutions.com"
- *   apiBaseUrl="https://logisticsapi.codevertexitsolutions.com/api/v1"
+ *   tileServerUrl="https://tiles.codevertexafrica.com"
+ *   apiBaseUrl="https://logisticsapi.codevertexafrica.com/api/v1"
  *   authToken={jwt}
  * >
  *   <OrderTrackingMap taskId={task.id} tenantSlug="urban-loft" />
