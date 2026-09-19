@@ -36,9 +36,12 @@ export function MapProvider({
       apiBaseUrl: config.apiBaseUrl,
       routingApiUrl: config.routingApiUrl ?? config.apiBaseUrl,
       authToken: config.authToken,
-      wsUrl:
-        config.wsUrl ??
-        config.apiBaseUrl.replace(/^http/, "ws").replace(/\/api\/v1$/, "/ws"),
+      // Default: same host/path as apiBaseUrl, scheme swapped to ws(s). Kept aligned with
+      // apiBaseUrl's own path (including a service's /api/v1 prefix, if it has one) rather
+      // than assuming every backend exposes a separate top-level /ws namespace — logistics-api
+      // mounts its tracking WebSocket at /api/v1/{tenant}/tracking/fleet/ws, inside the same
+      // tenant-scoped, auth-gated router as the REST endpoints, not a separate /ws namespace.
+      wsUrl: config.wsUrl ?? config.apiBaseUrl.replace(/^http/, "ws"),
     }),
     [
       config.tileServerUrl,

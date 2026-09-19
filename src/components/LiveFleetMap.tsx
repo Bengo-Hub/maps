@@ -109,7 +109,14 @@ export function LiveFleetMap({
   useEffect(() => {
     if (!config.wsUrl) return;
 
-    const wsUrl = `${config.wsUrl}/tracking/fleet`;
+    // A browser's native WebSocket API cannot set an Authorization header on the handshake
+    // request, so the token (when present) travels as a query param instead — the backend
+    // is expected to accept both. Without tenantSlug in the path, a multi-tenant backend has
+    // no way to know which tenant's fleet to stream.
+    const tokenParam = config.authToken
+      ? `?token=${encodeURIComponent(config.authToken)}`
+      : "";
+    const wsUrl = `${config.wsUrl}/${tenantSlug}/tracking/fleet/ws${tokenParam}`;
     let ws: WebSocket | null = null;
     let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
     let failCount = 0;
@@ -160,7 +167,7 @@ export function LiveFleetMap({
       ws?.close();
       if (reconnectTimer) clearTimeout(reconnectTimer);
     };
-  }, [config.wsUrl]);
+  }, [config.wsUrl, config.authToken, tenantSlug]);
 
   // Notify parent of rider updates
   useEffect(() => {
