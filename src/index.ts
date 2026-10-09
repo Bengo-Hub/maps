@@ -15,6 +15,15 @@ export type { DeliveryTrackingMapProps } from "./components/DeliveryTrackingMap"
 export { LiveFleetMap } from "./components/LiveFleetMap";
 export type { LiveFleetMapProps, FleetRider } from "./components/LiveFleetMap";
 
+export { LocationPicker } from "./components/LocationPicker";
+export type { LocationPickerProps, PickSource } from "./components/LocationPicker";
+
+export { ZoneLayer } from "./components/ZoneLayer";
+export type { ZoneLayerProps } from "./components/ZoneLayer";
+
+export { ZoneEditor } from "./components/ZoneEditor";
+export type { ZoneEditorProps, ZoneGeometry } from "./components/ZoneEditor";
+
 // Markers
 export { RiderMarker } from "./components/markers/RiderMarker";
 export type { RiderMarkerProps } from "./components/markers/RiderMarker";
@@ -33,6 +42,8 @@ export { useGeolocation } from "./hooks/useGeolocation";
 // Utilities
 export { haversineDistance, bearing, interpolate, fromLngLat, toLngLat } from "./utils/coordinates";
 export { animateMarker } from "./utils/animations";
+export { circlePolygon, pointInRing, ringsBounds, closeRing, openRing, destination } from "./utils/zones";
+export type { ZoneShape, Ring } from "./utils/zones";
 
 // Types
 export type {

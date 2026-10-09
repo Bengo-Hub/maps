@@ -60,6 +60,11 @@ const OrderTrackingMap = dynamic(
 | `RiderMarker` | Animated rider position marker |
 | `PickupMarker` | Green pickup location marker |
 | `DropoffMarker` | Red dropoff location marker |
+| `LocationPicker` | Customer or admin: one draggable pin, tap to move, "My location" button, optional delivery areas underneath |
+| `ZoneLayer` | Draws delivery zones (fill, outline, labels; exclusion zones dashed red) on any map |
+| `ZoneEditor` | Admin: edit one zone as a circle (drag centre, drag edge handle) or polygon (tap to add corners, drag, double-click to remove). Controlled, so typed coordinates stay in sync |
+
+Zones follow logistics-api's contract (`docs/delivery-zones.md` in logistics-api): rings are `[lng, lat]`, and `circlePolygon` produces the same 48-point ring the server stores, so the shape an admin sees is the shape customers are quoted against.
 
 ## Hooks
 
@@ -77,3 +82,6 @@ const OrderTrackingMap = dynamic(
 | `bearing` | Bearing from point A to B (degrees) |
 | `interpolate` | Linear interpolation between coordinates |
 | `animateMarker` | Smooth marker position animation |
+| `circlePolygon` | Circle as a closed `[lng, lat]` ring (matches the server) |
+| `pointInRing` | Point-in-polygon test for previews |
+| `ringsBounds` | Bounding box of one or more rings |
