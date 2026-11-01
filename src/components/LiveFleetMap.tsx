@@ -24,6 +24,12 @@ export interface LiveFleetMapProps {
   style?: CSSProperties;
   /** Initial zoom. Default: 12 */
   zoom?: number;
+  /**
+   * Where the map opens before any rider is on it, [lng, lat]: usually the business's main
+   * outlet. It may arrive after the map has loaded. Without it the map opens on the provider's
+   * default (Nairobi CBD). Once riders report positions the map frames them instead.
+   */
+  center?: [number, number];
   /** Callback when a rider marker is clicked */
   onRiderClick?: (rider: FleetRider) => void;
   /** Rider list updated callback */
@@ -55,6 +61,7 @@ export function LiveFleetMap({
   className,
   style,
   zoom = 12,
+  center,
   onRiderClick,
   onRidersUpdate,
 }: LiveFleetMapProps) {
@@ -62,6 +69,9 @@ export function LiveFleetMap({
   const [riders, setRiders] = useState<Map<string, FleetRider>>(new Map());
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const mapRef = useRef<MaplibreMap | null>(null);
+  const [mapReady, setMapReady] = useState(false);
+  // The first riders frame the map once; after that the dispatcher pans and zooms freely.
+  const framedRiders = useRef(false);
 
   // Fetch initial fleet positions
   useEffect(() => {
@@ -176,7 +186,17 @@ export function LiveFleetMap({
 
   const handleMapReady = useCallback((map: MaplibreMap) => {
     mapRef.current = map;
+    setMapReady(true);
   }, []);
+
+  // Open on the business until riders are on the map (the centre often loads after the map).
+  const centerLng = center?.[0];
+  const centerLat = center?.[1];
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady || framedRiders.current || centerLng == null || centerLat == null) return;
+    map.jumpTo({ center: [centerLng, centerLat] });
+  }, [mapReady, centerLng, centerLat]);
 
   // Sync markers with rider state
   useEffect(() => {
@@ -223,13 +243,22 @@ export function LiveFleetMap({
         markersRef.current.delete(riderId);
       }
     });
-  }, [riders, onRiderClick]);
+
+    // Frame the riders the first time any are known.
+    if (!framedRiders.current && riders.size > 0) {
+      const bounds = new maplibregl.LngLatBounds();
+      riders.forEach((r) => bounds.extend([r.location.longitude, r.location.latitude]));
+      map.fitBounds(bounds, { padding: 60, maxZoom: 14, duration: 0 });
+      framedRiders.current = true;
+    }
+  }, [riders, onRiderClick, mapReady]);
 
   return (
     <MapContainer
       className={className}
       style={style}
       zoom={zoom}
+      {...(center ? { center } : {})}
       onMapReady={handleMapReady}
     />
   );
