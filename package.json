@@ -1,6 +1,6 @@
 {
   "name": "@bengo-hub/maps",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Shared map components for logistics, delivery tracking, and fleet management. Built on MapLibre GL JS.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -11,6 +11,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js",
+      "require": "./dist/utils.cjs"
     }
   },
   "files": [
